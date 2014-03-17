@@ -1,8 +1,9 @@
-/**
- * Wrapper for XHR with support for JSON decoding and timeouts
- *
- * Compatible with all modern browsers and IE7+
- */
+/*!
+* tinyajax.js
+* (c) 2014 Sky Bet, http://www.skybet.com
+* https://github.com/skybet/tinyajax.js
+* license MIT
+*/
 (function (root, factory) {
     if (typeof define === 'function' && define.amd) {
         define([], factory);
