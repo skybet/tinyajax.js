@@ -1,0 +1,27 @@
+{
+  "name": "tinyajax.js",
+  "version": "0.1.0",
+  "description": "A tiny Ajax wrapper, with an err-back interface",
+  "main": "tinyajax.js",
+  "devDependencies": {
+    "mocha": "~1.18.2",
+    "sinon": "~1.9.1",
+    "xmlhttprequest": "~1.6.0"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/skybet/tinyajax.js.git"
+  },
+  "keywords": [
+    "ajax",
+    "xhr",
+    "micro",
+    "tiny"
+  ],
+  "author": "James Barwell",
+  "license": "MIT",
+  "readmeFilename": "README.md"
+}
