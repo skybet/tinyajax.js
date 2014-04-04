@@ -38,7 +38,7 @@ describe('tinyajax.js', function() {
                 tinyajax.get('http://www.example.com', callback);
             });
 
-            it('should make an XHR request to the URL', function() {
+            it('should make an XHR GET request to the URL', function() {
                 assert.equal(requests.length, 1);
 
                 var request = requests[0];
@@ -58,11 +58,88 @@ describe('tinyajax.js', function() {
             });
 
             context('after server responds unsuccessfully', function() {
-                it('should run the callback with an error');
+                beforeEach(function() {
+                    var request = requests[0];
+                    request.respond(500, {}, '<h1>server error</h1>');
+                });
+
+                it('should run the callback with an error', function() {
+                    sinon.assert.calledOnce(callback);
+                    var errorArg = callback.lastCall.args[0];
+                    assert.ok(errorArg);
+                });
             });
 
             context('after server fails to respond', function() {
-                it('should run the callback with a timeout error');
+                context('and the timeout delay is not set', function() {
+                    it('should not run the callback', function() {
+                        sinon.assert.notCalled(callback);
+                    });
+                });
+                context('and the timeout delay is set', function() {
+                    it('should run the callback with a timeout error');
+                });
+            });
+
+            context('when server responds successfully with JSON', function() {
+                beforeEach(function() {
+                    var request = requests[0];
+                    var headers = {
+                        'Content-Type': 'application/json'
+                    }
+                    request.respond(200, headers, JSON.stringify({
+                        success: true
+                    }));
+                });
+
+                it.skip('should return the decoded the JSON', function() {
+                    sinon.assert.calledOnce(callback);
+
+                    var response = callback.lastCall.args[1];
+                    sinon.assert.calledWith(callback, null, {
+                        success: true
+                    });
+                });
+            });
+
+            context('when server responds unsuccessfully with JSON', function() {
+                beforeEach(function() {
+                    var request = requests[0];
+                    var headers = {
+                        'Content-Type': 'application/json'
+                    }
+                    request.respond(400, headers, JSON.stringify({
+                        success: false
+                    }));
+                });
+
+                it.skip('should return the decoded the JSON', function() {
+                    sinon.assert.calledOnce(callback);
+
+                    var errorArg = callback.lastCall.args[0];
+
+                    assert.deepEqual(errorArg.response, {
+                        success: false
+                    });
+                });
+            });
+
+            context('when server responds with invalid JSON', function() {
+                beforeEach(function() {
+                    var request = requests[0];
+                    var headers = {
+                        'Content-Type': 'application/json'
+                    }
+                    request.respond(400, headers, '{ not valid: json, oh nos } <h1>error</h1>');
+                });
+
+                it('should return a JSON decode error', function() {
+                    sinon.assert.calledOnce(callback);
+
+                    var errorArg = callback.lastCall.args[0];
+
+                    assert.equal(errorArg.code, tinyajax.JSONDECODE);
+                });
             });
         });
 
@@ -107,7 +184,18 @@ describe('tinyajax.js', function() {
         });
 
         context('with url, null, headers, callback', function() {
-            it('should correctly send the headers');
+            beforeEach(function() {
+                var headers = {
+                    Accept: 'application/json'
+                }
+
+                tinyajax.get('http://www.example.com', null, headers);
+            });
+
+            it('should correctly send the headers', function() {
+                var request = requests[0];
+                assert.equal(request.requestHeaders.Accept, 'application/json');
+            });
         });
 
     });
