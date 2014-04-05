@@ -108,7 +108,12 @@
                 }
             }
 
-            return callback(err, response, xhr);
+            if (err) {
+                err.response = response;
+                return callback(err);
+            }
+
+            return callback(null, response, xhr);
         };
 
         xhr.send(payload);

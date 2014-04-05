@@ -133,7 +133,7 @@ describe('tinyajax.js', function() {
                     sinon.assert.calledOnce(callback);
                 });
 
-                it.skip('should return the decoded JSON on error.response', function() {
+                it('should return the decoded JSON on error.response', function() {
                     assert.ok(error);
                     assert.deepEqual(error.response, {
                         success: false
