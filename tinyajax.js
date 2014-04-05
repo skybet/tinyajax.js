@@ -89,8 +89,10 @@
                 xhr.status !== 304 &&
                 // IE changes 204 to 1223: http://bugs.jquery.com/ticket/1450
                 xhr.status !== 1223 &&
-                new Error('HTTP Status error');
-            err.status = xhr.status;
+                new Error('HTTP Status error') || null;
+            if (err) {
+                err.status = xhr.status;
+            }
 
             var response = xhr.responseText;
             var contentType = xhr.getResponseHeader('Content-type');

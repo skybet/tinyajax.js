@@ -57,9 +57,9 @@ describe('tinyajax.js', function() {
                     request.respond(200, {}, '<h1>success</h1>');
                 });
 
-                it.skip('should run the callback with no error and the response', function() {
+                it('should run the callback with no error and the response', function() {
                     sinon.assert.calledOnce(callback);
-                    sinon.assert.calledWith(null, '<h1>success</h1>');
+                    sinon.assert.calledWith(callback, null, '<h1>success</h1>');
                 });
             });
 
@@ -105,7 +105,7 @@ describe('tinyajax.js', function() {
                     request.respond(200, headers, data);
                 });
 
-                it.skip('should return the decoded JSON', function() {
+                it('should return the decoded JSON', function() {
                     sinon.assert.calledOnce(callback);
 
                     var response = callback.lastCall.args[1];
@@ -349,7 +349,7 @@ describe('tinyajax.js', function() {
                 });
             });
 
-            it.skip('should not return an error', function() {
+            it('should not return an error', function() {
                 iterateStatusCodes('success', function(code) {
                     var callback = callbacks[code];
                     sinon.assert.calledOnce(callback);
