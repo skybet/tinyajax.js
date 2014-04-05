@@ -92,6 +92,7 @@
                 new Error('HTTP Status error') || null;
             if (err) {
                 err.status = xhr.status;
+                err.xhr = xhr;
             }
 
             var response = xhr.responseText;

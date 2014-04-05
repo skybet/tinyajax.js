@@ -78,10 +78,10 @@ describe('tinyajax.js', function() {
                 });
 
                 context('the error', function() {
-                    it.skip('should contain the HTTP status code on error.code', function() {
-                        assert.equal(error.code, 500);
+                    it('should contain the HTTP status code on error.code', function() {
+                        assert.equal(error.status, 500);
                     });
-                    it.skip('should contain the XHR object on error.xhr', function() {
+                    it('should contain the XHR object on error.xhr', function() {
                         assert.ok(error.xhr);
                     });
                 });
