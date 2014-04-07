@@ -194,9 +194,10 @@ describe('tinyajax.js', function() {
                 assert.equal(request.url, 'http://www.example.com?foo=true&bar=test&baz=123');
             });
 
-            it.skip('should specificy form-encoding as the content-type', function() {
+            it('should specificy form-encoding as the content-type', function() {
                 var request = requests[0];
-                assert.equal(request.requestHeaders['Content-Type'], 'application/x-www-form-urlencoded');
+                var contentTypeHeader = request.requestHeaders['Content-Type'];
+                assert.equal(contentTypeHeader, 'application/x-www-form-urlencoded');
             });
         });
 
@@ -210,9 +211,13 @@ describe('tinyajax.js', function() {
                 assert.equal(request.requestBody, 'foo=true&bar=test&baz=123');
             });
 
-            it.skip('should specificy form-encoding as the content-type', function() {
+            it('should specificy form-encoding as the content-type', function() {
                 var request = requests[0];
-                assert.equal(request.requestHeaders['Content-Type'], 'application/x-www-form-urlencoded');
+                var contentTypeHeader = request.requestHeaders['Content-Type'];
+
+                // Character encoding is sent as well so split the string
+                var parts = contentTypeHeader.split(';');
+                assert.equal(parts[0], 'application/x-www-form-urlencoded');
             });
 
         });

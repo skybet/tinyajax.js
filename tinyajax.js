@@ -58,8 +58,8 @@
 
         xhr.open(method, url);
 
-        if (!headers['Content-type']) {
-            headers['Content-type'] = 'application/x-www-form-urlencoded';
+        if (!headers['Content-Type']) {
+            headers['Content-Type'] = 'application/x-www-form-urlencoded';
         }
 
         for (var h in headers) {
