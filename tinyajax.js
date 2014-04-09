@@ -50,9 +50,8 @@
 
         var payload = encode(data);
         if (method === 'GET' && payload) {
-            if (payload) {
-                url += '?' + payload;
-            }
+            url += (url.indexOf('?') === -1 ? '?' : '&');
+            url += payload;
             payload = null;
         }
 

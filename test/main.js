@@ -319,6 +319,25 @@ describe('tinyajax.js', function() {
         });
     });
 
+    describe('make XHR request to URL with query parameters', function() {
+        var data = {
+            bar: 'test',
+            baz: 123
+        };
+        var request;
+
+        context('with data', function() {
+            beforeEach(function() {
+                tinyajax.get('http://www.example.com?foo=foo', data);
+                request = requests[0];
+            });
+
+            it('should serialise new data on to the URL correctly', function() {
+                assert.equal(request.url, 'http://www.example.com?foo=foo&bar=test&baz=123');
+            });
+        });
+    });
+
     describe('handle response HTTP status codes', function() {
         var callbacks = {};
         var errors = {};
