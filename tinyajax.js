@@ -48,18 +48,24 @@
             return callback(err);
         }
 
-        var payload = encode(data);
-        if (method === 'GET' && payload) {
-            url += (url.indexOf('?') === -1 ? '?' : '&');
-            url += payload;
-            payload = null;
-        }
-
-        xhr.open(method, url);
-
         if (!headers['Content-Type']) {
             headers['Content-Type'] = 'application/x-www-form-urlencoded';
         }
+
+        var payload = null;
+        if (Object.keys(data).length > 0) {
+            if (method !== 'GET' &&
+                headers['Content-Type'].indexOf('application/json') !== -1
+            ) {
+                payload = JSON.stringify(data);
+            } else {
+                payload = encode(data);
+                url += (url.indexOf('?') === -1 ? '?' : '&');
+                url += payload;
+            }
+        }
+
+        xhr.open(method, url);
 
         for (var h in headers) {
             if (headers.hasOwnProperty(h)) {

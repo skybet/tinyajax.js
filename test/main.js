@@ -267,6 +267,37 @@ describe('tinyajax.js', function() {
         });
     });
 
+    describe('make XHR request with data and JSON header', function() {
+        var data = {
+            foo: true,
+            bar: 'test',
+            baz: 123
+        };
+        var headers = {
+            'Content-Type': 'application/json'
+        };
+        var request;
+
+        context('post()', function() {
+            beforeEach(function() {
+                tinyajax.post('http://www.example.com', data, headers);
+                request = requests[0];
+            });
+
+            it('should send JSON-encoded data in the POST body', function() {
+                assert.equal(request.requestBody, '{"foo":true,"bar":"test","baz":123}');
+            });
+
+            it('should send the specified headers', function() {
+                var contentTypeHeader = request.requestHeaders['Content-Type'];
+
+                // Character encoding is sent as well so split the string
+                var parts = contentTypeHeader.split(';');
+                assert.equal(parts[0], 'application/json');
+            });
+        });
+    });
+
     describe('make XHR request with timeout', function() {
         var callback;
 
