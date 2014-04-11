@@ -38,22 +38,21 @@ describe('tinyajax.js', function() {
 
         context('with url and callback', function() {
             var callback;
+            var request;
 
             beforeEach(function() {
                 callback = sinon.spy();
                 tinyajax.get('http://www.example.com', callback);
+                request = requests[0];
             });
 
             it('should make an XHR GET request to the URL', function() {
                 assert.equal(requests.length, 1);
-
-                var request = requests[0];
                 assert.equal(request.url, 'http://www.example.com');
             });
 
             context('after server responds successfully', function() {
                 beforeEach(function() {
-                    var request = requests[0];
                     request.respond(200, {}, '<h1>success</h1>');
                 });
 
@@ -67,7 +66,6 @@ describe('tinyajax.js', function() {
                 var error;
 
                 beforeEach(function() {
-                    var request = requests[0];
                     request.respond(500, {}, '<h1>server error</h1>');
                     error = callback.lastCall.args[0];
                 });
@@ -95,7 +93,6 @@ describe('tinyajax.js', function() {
 
             context('when server responds successfully with JSON', function() {
                 beforeEach(function() {
-                    var request = requests[0];
                     var headers = {
                         'Content-Type': 'application/json'
                     };
@@ -119,7 +116,6 @@ describe('tinyajax.js', function() {
                 var error;
 
                 beforeEach(function() {
-                    var request = requests[0];
                     var headers = {
                         'Content-Type': 'application/json'
                     }
@@ -143,7 +139,6 @@ describe('tinyajax.js', function() {
 
             context('when server responds with invalid JSON', function() {
                 beforeEach(function() {
-                    var request = requests[0];
                     var headers = {
                         'Content-Type': 'application/json'
                     }
@@ -162,22 +157,25 @@ describe('tinyajax.js', function() {
         });
 
         context('with url, headers and callback', function() {
+            var request;
+
             beforeEach(function() {
                 var headers = {
                     Accept: 'application/json'
                 }
 
                 tinyajax.get('http://www.example.com', null, headers);
+                request = requests[0];
             });
 
             it('should correctly send the headers', function() {
-                var request = requests[0];
                 assert.equal(request.requestHeaders.Accept, 'application/json');
             });
         });
     });
 
     describe('make XHR request with data', function() {
+        var request;
         var data = {
             foo: true,
             bar: 'test',
@@ -187,15 +185,14 @@ describe('tinyajax.js', function() {
         context('get()', function() {
             beforeEach(function() {
                 tinyajax.get('http://www.example.com', data);
+                request = requests[0];
             });
 
             it('should serialise the data into the URL query parameters', function() {
-                var request = requests[0];
                 assert.equal(request.url, 'http://www.example.com?foo=true&bar=test&baz=123');
             });
 
             it('should specificy form-encoding as the content-type', function() {
-                var request = requests[0];
                 var contentTypeHeader = request.requestHeaders['Content-Type'];
                 assert.equal(contentTypeHeader, 'application/x-www-form-urlencoded');
             });
@@ -204,15 +201,14 @@ describe('tinyajax.js', function() {
         context('post()', function() {
             beforeEach(function() {
                 tinyajax.post('http://www.example.com', data);
+                request = requests[0];
             });
 
             it('should send form-encoded data in the POST body', function() {
-                var request = requests[0];
                 assert.equal(request.requestBody, 'foo=true&bar=test&baz=123');
             });
 
             it('should specificy form-encoding as the content-type', function() {
-                var request = requests[0];
                 var contentTypeHeader = request.requestHeaders['Content-Type'];
 
                 // Character encoding is sent as well so split the string
@@ -225,6 +221,7 @@ describe('tinyajax.js', function() {
 
     describe('make XHR request with data and headers', function() {
         var callback;
+        var request;
         var data = {
             foo: true,
             bar: 'test',
@@ -238,14 +235,13 @@ describe('tinyajax.js', function() {
             beforeEach(function() {
                 callback = sinon.spy();
                 tinyajax.get('http://www.example.com', data, headers, callback);
+                request = requests[0];
             });
 
             it('should serialise the data into the URL query parameters', function() {
-                var request = requests[0];
                 assert.equal(request.url, 'http://www.example.com?foo=true&bar=test&baz=123');
             });
             it('should send the specified headers', function() {
-                var request = requests[0];
                 assert.equal(request.requestHeaders.Accept, 'application/json');
             });
         });
@@ -253,15 +249,14 @@ describe('tinyajax.js', function() {
             beforeEach(function() {
                 callback = sinon.spy();
                 tinyajax.post('http://www.example.com', data, headers, callback);
+                request = requests[0];
             });
 
             it('should send form-encoded data in the POST body', function() {
-                var request = requests[0];
                 assert.equal(request.requestBody, 'foo=true&bar=test&baz=123');
             });
 
             it('should send the specified headers', function() {
-                var request = requests[0];
                 assert.equal(request.requestHeaders.Accept, 'application/json');
             });
         });
