@@ -37,8 +37,8 @@
             headers = {};
         }
 
-        data     = data || {};
-        headers  = headers || {};
+        data     = data     || {};
+        headers  = headers  || {};
         callback = callback || function() {};
 
         var xhr = getXhr();
@@ -60,8 +60,11 @@
                 payload = JSON.stringify(data);
             } else {
                 payload = encode(data);
-                url += (url.indexOf('?') === -1 ? '?' : '&');
-                url += payload;
+                if (method === 'GET') {
+                    url += (url.indexOf('?') === -1 ? '?' : '&');
+                    url += payload;
+                    payload = null;
+                }
             }
         }
 

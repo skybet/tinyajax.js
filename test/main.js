@@ -204,6 +204,10 @@ describe('tinyajax.js', function() {
                 request = requests[0];
             });
 
+            it('should make an XHR POST request to the URL', function() {
+                assert.equal(request.url, 'http://www.example.com');
+            });
+
             it('should send form-encoded data in the POST body', function() {
                 assert.equal(request.requestBody, 'foo=true&bar=test&baz=123');
             });
