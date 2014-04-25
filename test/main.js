@@ -105,7 +105,6 @@ describe('tinyajax.js', function() {
                 it('should return the decoded JSON', function() {
                     sinon.assert.calledOnce(callback);
 
-                    var response = callback.lastCall.args[1];
                     sinon.assert.calledWith(callback, null, {
                         success: true
                     });
@@ -149,7 +148,6 @@ describe('tinyajax.js', function() {
                     sinon.assert.calledOnce(callback);
 
                     var errorArg = callback.lastCall.args[0];
-
                     assert.equal(errorArg.code, tinyajax.JSONDECODE);
                 });
             });
