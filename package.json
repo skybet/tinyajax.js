@@ -6,10 +6,12 @@
   "devDependencies": {
     "mocha": "~1.18.2",
     "sinon": "~1.9.1",
-    "xmlhttprequest": "~1.6.0"
+    "xmlhttprequest": "~1.6.0",
+    "istanbul": "~0.2.7"
   },
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "coverage": "istanbul cover _mocha"
   },
   "repository": {
     "type": "git",
