@@ -366,69 +366,53 @@ describe('tinyajax.js', function() {
         });
     });
 
-    describe('handle response HTTP status codes', function() {
-        var callbacks = {};
-        var errors = {};
-
-        function iterateStatusCodes(type, callback) {
-            var start;
-            var stop;
-
-            if (type === 'success') {
-                start = 200;
-                stop  = 299;
-            } else if (type === 'client-error') {
-                start = 400;
-                stop  = 499;
-            } else {
-                throw new Error('Not implemented');
+    describe('handle response HTTP status codes properly', function() {
+        function createRange(start, stop) {
+            var list = [];
+            for (var i = start; i <= stop; i++) {
+                    list.push(i);
             }
+            return list;
+        }
 
-            for (var i = 0, code = start; code <= stop; i++, code++) {
-                callback(code, i);
-            }
-        };
+        var successCodes = createRange(200, 299);
+        var errorCodes = createRange(400, 599);
 
-        context('when it receives an HTTP success code', function() {
-            beforeEach(function() {
-                iterateStatusCodes('success', function(code, i) {
-                    var callback = sinon.spy();
-                    callbacks[code] = callback;
+        successCodes.forEach(function(httpCode) {
+            context('when it makes an XHR call and receives HTTP status code ' + httpCode, function() {
+                var callback = sinon.spy();
+
+                beforeEach(function() {
                     tinyajax.get('http://www.example.com', callback);
 
-                    var request = requests[i];
-                    request.respond(code, {}, '<h1>success</h1>');
+                    var request = requests[0];
+                    request.respond(httpCode, {}, '<h1>success</h1>');
                 });
-            });
 
-            it('should not return an error', function() {
-                iterateStatusCodes('success', function(code) {
-                    var callback = callbacks[code];
+                it('should not return an error', function() {
                     sinon.assert.calledOnce(callback);
                     sinon.assert.calledWith(callback, null);
                 });
             });
         });
 
-        context('when it receives an HTTP client error', function() {
-            beforeEach(function() {
-                iterateStatusCodes('client-error', function(code, i) {
-                    var callback = sinon.spy();
-                    callbacks[code] = callback;
+        errorCodes.forEach(function(httpCode) {
+            context('when it makes an XHR call and receives HTTP status code ' + httpCode, function() {
+                var callback = sinon.spy();
+
+                beforeEach(function() {
                     tinyajax.get('http://www.example.com', callback);
 
-                    var request = requests[i];
-                    request.respond(code, {}, '<h1>failure</h1>');
-
-                    errors[code] = callback.lastCall.args[0];
+                    var request = requests[0];
+                    request.respond(httpCode, {}, '<h1>success</h1>');
                 });
-            });
 
-            it('should return an error', function() {
-                iterateStatusCodes('client-error', function(code) {
-                    var callback = callbacks[code];
+                it('should return an error with the code', function() {
                     sinon.assert.calledOnce(callback);
-                    assert.ok(errors[code]);
+
+                    var errorObject = callback.lastCall.args[0];
+                    assert.ok(errorObject);
+                    assert.equal(errorObject.status, httpCode);
                 });
             });
         });
