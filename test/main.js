@@ -137,18 +137,24 @@ describe('tinyajax.js', function() {
             });
 
             context('when server responds with invalid JSON', function() {
+                var error;
+
                 beforeEach(function() {
                     var headers = {
                         'Content-Type': 'application/json'
                     }
                     request.respond(400, headers, '{ not valid: json, oh nos } <h1>error</h1>');
+
+                    error = callback.lastCall.args[0];
                 });
 
                 it('should return a JSON decode error', function() {
                     sinon.assert.calledOnce(callback);
+                    assert.equal(error.code, tinyajax.JSONDECODE);
+                });
 
-                    var errorArg = callback.lastCall.args[0];
-                    assert.equal(errorArg.code, tinyajax.JSONDECODE);
+                it('should contain the XHR object on error.xhr', function() {
+                    assert.ok(error.xhr);
                 });
             });
 

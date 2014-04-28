@@ -112,6 +112,7 @@
                 } catch (e) {
                     var err = new Error('Could not decode JSON response: ' + e.toString());
                     err.code = exports.JSONDECODE;
+                    err.xhr = xhr;
                     return callback(err);
                 }
             }
