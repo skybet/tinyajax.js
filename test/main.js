@@ -372,17 +372,49 @@ describe('tinyajax.js', function() {
         });
     });
 
-    describe('handle response HTTP status codes properly', function() {
-        function createRange(start, stop) {
+    describe('handle response HTTP status codes', function() {
+        function createRange() {
             var list = [];
-            for (var i = start; i <= stop; i++) {
-                    list.push(i);
+
+            for (var i in arguments) {
+                var parts = arguments[i].split('-');
+
+                if (parts.length === 2) {
+                    var start = parseInt(parts[0], 10);
+                    var stop = parseInt(parts[1], 10);
+
+                    for (var i = start; i <= stop; i++) {
+                        list.push(i);
+                    }
+                } else {
+                    list.push(parseInt(parts, 10));
+                }
             }
+
             return list;
         }
 
-        var successCodes = createRange(200, 299);
-        var errorCodes = createRange(400, 599);
+        var successCodes = createRange(
+            '200-208',
+            '226'
+        );
+        var errorCodes = createRange(
+            // Client error
+            '400-420',
+            '422-426',
+            '428-429',
+            '431',
+            '440',
+            '444',
+            '449-451',
+            '494-497',
+            '499',
+
+            // Server error
+            '500-511',
+            '520-524',
+            '598-599'
+        );
 
         successCodes.forEach(function(httpCode) {
             context('when it makes an XHR call and receives HTTP status code ' + httpCode, function() {
