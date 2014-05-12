@@ -1,7 +1,7 @@
 tinyajax.js
 ======
 
-A tiny Ajax wrapper, with an err-back interface
+A tiny Ajax wrapper, with an err-back interface, JSON decoding and AMD support.
 
 [![Build Status](https://travis-ci.org/skybet/tinyajax.js.svg?branch=master)](https://travis-ci.org/skybet/tinyajax.js)
 
@@ -10,7 +10,7 @@ A tiny Ajax wrapper, with an err-back interface
 tinyAjax.get(
     '/path',
     {
-        data: 'test'
+        foo: 'bar'
     },
     {
         Accept: 'application/json'
