@@ -34,9 +34,9 @@ describe('tinyajax.js', function() {
         clock.restore();
     });
 
-    context('make XHR request', function() {
+    describe('make XHR request', function() {
 
-        context('with url and callback', function() {
+        describe('with url and callback', function() {
             var callback;
             var request;
 
@@ -51,7 +51,7 @@ describe('tinyajax.js', function() {
                 assert.equal(request.url, 'http://www.example.com');
             });
 
-            context('after server responds successfully', function() {
+            describe('after server responds successfully', function() {
                 beforeEach(function() {
                     request.respond(200, {}, '<h1>success</h1>');
                 });
@@ -62,7 +62,7 @@ describe('tinyajax.js', function() {
                 });
             });
 
-            context('after server responds unsuccessfully', function() {
+            describe('after server responds unsuccessfully', function() {
                 var error;
 
                 beforeEach(function() {
@@ -75,7 +75,7 @@ describe('tinyajax.js', function() {
                     assert.ok(error);
                 });
 
-                context('the error', function() {
+                describe('the error', function() {
                     it('should contain the HTTP status code on error.code', function() {
                         assert.equal(error.status, 500);
                     });
@@ -85,13 +85,13 @@ describe('tinyajax.js', function() {
                 });
             });
 
-            context('after server fails to respond', function() {
+            describe('after server fails to respond', function() {
                 it('should not run the callback', function() {
                     sinon.assert.notCalled(callback);
                 });
             });
 
-            context('when server responds successfully with JSON', function() {
+            describe('when server responds successfully with JSON', function() {
                 beforeEach(function() {
                     var headers = {
                         'Content-Type': 'application/json'
@@ -111,7 +111,7 @@ describe('tinyajax.js', function() {
                 });
             });
 
-            context('when server responds unsuccessfully with JSON', function() {
+            describe('when server responds unsuccessfully with JSON', function() {
                 var error;
 
                 beforeEach(function() {
@@ -136,7 +136,7 @@ describe('tinyajax.js', function() {
                 });
             });
 
-            context('when server responds with invalid JSON', function() {
+            describe('when server responds with invalid JSON', function() {
                 var error;
 
                 beforeEach(function() {
@@ -160,7 +160,7 @@ describe('tinyajax.js', function() {
 
         });
 
-        context('with url, headers and callback', function() {
+        describe('with url, headers and callback', function() {
             var request;
 
             beforeEach(function() {
@@ -186,7 +186,7 @@ describe('tinyajax.js', function() {
             baz: 123
         };
 
-        context('get()', function() {
+        describe('get()', function() {
             beforeEach(function() {
                 tinyajax.get('http://www.example.com', data);
                 request = requests[0];
@@ -202,7 +202,7 @@ describe('tinyajax.js', function() {
             });
         });
 
-        context('post()', function() {
+        describe('post()', function() {
             beforeEach(function() {
                 tinyajax.post('http://www.example.com', data);
                 request = requests[0];
@@ -239,7 +239,7 @@ describe('tinyajax.js', function() {
             'Accept': 'application/json'
         };
 
-        context('get()', function() {
+        describe('get()', function() {
             beforeEach(function() {
                 callback = sinon.spy();
                 tinyajax.get('http://www.example.com', data, headers, callback);
@@ -253,7 +253,7 @@ describe('tinyajax.js', function() {
                 assert.equal(request.requestHeaders.Accept, 'application/json');
             });
         });
-        context('post()', function() {
+        describe('post()', function() {
             beforeEach(function() {
                 callback = sinon.spy();
                 tinyajax.post('http://www.example.com', data, headers, callback);
@@ -281,7 +281,7 @@ describe('tinyajax.js', function() {
         };
         var request;
 
-        context('post()', function() {
+        describe('post()', function() {
             beforeEach(function() {
                 tinyajax.post('http://www.example.com', data, headers);
                 request = requests[0];
@@ -310,7 +310,7 @@ describe('tinyajax.js', function() {
             tinyajax.get('http://www.example.com', callback);
         });
 
-        context('after server fails to respond within timeout limit', function() {
+        describe('after server fails to respond within timeout limit', function() {
             var error;
 
             beforeEach(function() {
@@ -360,7 +360,7 @@ describe('tinyajax.js', function() {
         };
         var request;
 
-        context('with data', function() {
+        describe('with data', function() {
             beforeEach(function() {
                 tinyajax.get('http://www.example.com?foo=foo', data);
                 request = requests[0];
@@ -417,7 +417,7 @@ describe('tinyajax.js', function() {
         );
 
         successCodes.forEach(function(httpCode) {
-            context('when it makes an XHR call and receives HTTP status code ' + httpCode, function() {
+            describe('when it makes an XHR call and receives HTTP status code ' + httpCode, function() {
                 var callback = sinon.spy();
 
                 beforeEach(function() {
@@ -435,7 +435,7 @@ describe('tinyajax.js', function() {
         });
 
         errorCodes.forEach(function(httpCode) {
-            context('when it makes an XHR call and receives HTTP status code ' + httpCode, function() {
+            describe('when it makes an XHR call and receives HTTP status code ' + httpCode, function() {
                 var callback = sinon.spy();
 
                 beforeEach(function() {
